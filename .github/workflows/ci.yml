@@ -17,6 +17,4 @@ jobs:
           - 80:5678
 
     steps:
-      - uses: actions/checkout@v1
-      - run: ls
-      - run: curl http://echo
+      - run: curl http://echo.local || curl http://echo || curl echo
