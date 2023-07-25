@@ -7,14 +7,13 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
-    container:
-      image: node:latest
+    container: ubuntu:latest
 
     services:
       echo:
         image: hashicorp/http-echo
         ports:
-          - 80:5678
+          - 8080:5678
 
     steps:
-      - run: curl http://echo.local || curl http://echo || curl echo
+      - run: curl -v http://echo:8080
