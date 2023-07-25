@@ -2,6 +2,7 @@ name: Update CI
 
 on:
   workflow_dispatch:
+  push:
 
 jobs:
   ci:
@@ -16,4 +17,6 @@ jobs:
           - 80:5678
 
     steps:
+      - uses: actions/checkout@v1
+      - run: ls
       - run: curl http://echo
