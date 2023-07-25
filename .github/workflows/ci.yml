@@ -1,0 +1,15 @@
+name: Update CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    services:
+      echo-service:
+        image: hashicorp/http-echo
+
+    steps:
+      - run: curl http://echo-service
