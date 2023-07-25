@@ -10,10 +10,43 @@ jobs:
     container: node:latest
 
     services:
-      echo:
+      echo-test:
         image: hashicorp/http-echo
         ports:
-          - 8080:5678
+          - 80:5678
 
     steps:
-      - run: curl -v http://echo:8080
+      - run: curl -v http://echo-test
+
+  minio:
+    runs-on: ubuntu-latest
+    container: discourse/discourse_test:slim
+
+    services:
+      minio.local:
+        image: bitnami/minio:latest
+        ports:
+          - 9000:9000
+          - 9001:9001
+        env:
+          MINIO_ROOT_USER: minioadmin
+          MINIO_ROOT_PASSWORD: minioadmin
+          MINIO_DOMAIN: minio.local
+        options: --name=minio.local
+
+    steps:
+      - name: Ping Minio container
+        run: |
+          curl -v http://minio.local:9000
+
+      - name: Fetch minio mc client and setup bucket
+        run: |
+          curl -o ./mc -# https://dl.min.io/client/mc/release/linux-amd64/mc && chmod +x ./mc
+          ./mc alias set local http://minio.local:9000 minioadmin minioadmin
+          ./mc mb local/discoursetest
+          ./mc anonymous set public local/discoursetest
+          ./mc admin config get local api
+
+      - name: Ping Minio subdomain
+        run: |
+          curl -v http://discoursetest.minio.local:9000/
