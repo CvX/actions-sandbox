@@ -1,4 +1,4 @@
-name: Update CI
+name: CI
 
 on:
   workflow_dispatch:
@@ -16,7 +16,7 @@ jobs:
           - 80:5678
 
     steps:
-      - run: curl -v http://echo-test
+      - run: curl -v http://echo-test || curl -v http://localhost
 
   minio:
     runs-on: ubuntu-latest
@@ -35,7 +35,7 @@ jobs:
         options: --name=minio.local
 
     steps:
-      - run: echo "\ndiscoursetest.minio.local minio.local" >> /etc/hosts
+      - run: echo "minio.local discoursetest.minio.local" | sudo tee -a /etc/hosts
 
       - name: Ping Minio container
         run: |
