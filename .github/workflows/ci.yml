@@ -6,6 +6,7 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    container: discourse/discourse_test:slim
 
     services:
       echo:
