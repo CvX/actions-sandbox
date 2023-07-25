@@ -35,6 +35,8 @@ jobs:
         options: --name=minio.local
 
     steps:
+      - run: echo "\ndiscoursetest.minio.local minio.local" >> /etc/hosts
+
       - name: Ping Minio container
         run: |
           curl -v http://minio.local:9000
