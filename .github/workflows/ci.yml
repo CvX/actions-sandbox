@@ -10,6 +10,8 @@ jobs:
     services:
       echo-service:
         image: hashicorp/http-echo
+        ports:
+          - 80:5678:5678
 
     steps:
       - run: curl http://echo-service
