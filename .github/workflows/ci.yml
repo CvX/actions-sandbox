@@ -10,13 +10,13 @@ jobs:
     container: node:latest
 
     services:
-      echo-test:
-        image: hashicorp/http-echo
+      echo:
+        image: httpd
         ports:
-          - 80:5678
+          - 80:80
 
     steps:
-      - run: curl -v http://echo-test || curl -v http://localhost
+      - run: curl -v http://echo
 
   minio:
     runs-on: ubuntu-latest
@@ -32,11 +32,9 @@ jobs:
           MINIO_ROOT_USER: minioadmin
           MINIO_ROOT_PASSWORD: minioadmin
           MINIO_DOMAIN: minio.local
-        options: --name=minio.local
+        options: --network-alias discoursetest.minio.local
 
     steps:
-      - run: echo "minio.local discoursetest.minio.local" | sudo tee -a /etc/hosts
-
       - name: Ping Minio container
         run: |
           curl -v http://minio.local:9000
